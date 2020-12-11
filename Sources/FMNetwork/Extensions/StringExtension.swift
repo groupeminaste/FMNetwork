@@ -8,9 +8,9 @@
 
 import Foundation
 
-public extension String {
+internal extension String {
     
-    public func groups(for regexPattern: String) -> [[String]] {
+    func groups(for regexPattern: String) -> [[String]] {
         do {
             let text = self
             let regex = try NSRegularExpression(pattern: regexPattern)

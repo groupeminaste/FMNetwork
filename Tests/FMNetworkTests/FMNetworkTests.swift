@@ -6,7 +6,7 @@ final class FMNetworkTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
-        XCTAssertEqual(FMNetwork().text, "Hello, World!")
+        XCTAssertEqual(FMNetwork(type: .current).card.data, "-----")
     }
 
     static var allTests = [
