@@ -33,19 +33,19 @@ if current.card.mcc == current.network.mcc {
 ## Public structure of the FMNetwork class
 
 FMNetwork: (contains every data about a SIM card and its connected network)
-    * card: FMNetworkSIMData (contains every data about a SIM card)
-        * active: Bool (returns true if the SIM card is inserted and in use)
-        * name: String (returns the name of the SIM card carrier, "Carrier" by default)
-        * mcc: String (returns the Mobile Country Code (MCC) of the SIM card carrier, "---" by default)
-        * mnc: String (returns the Mobile Network Code (MNC) of the SIM card carrier, "--" by default)
-        * land: String (returns the uppercased 2-digit ISO country code* of the SIM card carrier, "--" by default)
-        * type: FMNetworkType (.sim, .esim or .current)
-    * network: FMNetworkData (contains every data about the connected network of a SIM card)
-        * name: String (returns the name of the connected network, "Carrier" by default)
-        * mcc: String (returns the Mobile Country Code (MCC) of the connected network, "---" by default)
-        * mnc: String (returns the Mobile Network Code (MNC) of the connected network, "--" by default)
-        * land: String (returns the uppercased 2-digit ISO country code* of the connected network, "--" by default)
-        * connected: String (Core Telephony [CTRadioAccessTechnology](https://developer.apple.com/documentation/coretelephony/cttelephonynetworkinfo/radio_access_technology_constants) constant, "" by default)
+  * card: FMNetworkSIMData (contains every data about a SIM card)
+    * active: Bool (returns true if the SIM card is inserted and in use)
+    * name: String (returns the name of the SIM card carrier, "Carrier" by default)
+    * mcc: String (returns the Mobile Country Code (MCC) of the SIM card carrier, "---" by default)
+    * mnc: String (returns the Mobile Network Code (MNC) of the SIM card carrier, "--" by default)
+    * land: String (returns the uppercased 2-digit ISO country code* of the SIM card carrier, "--" by default)
+    * type: FMNetworkType (.sim, .esim or .current)
+* network: FMNetworkData (contains every data about the connected network of a SIM card)
+    * name: String (returns the name of the connected network, "Carrier" by default)
+    * mcc: String (returns the Mobile Country Code (MCC) of the connected network, "---" by default)
+    * mnc: String (returns the Mobile Network Code (MNC) of the connected network, "--" by default)
+    * land: String (returns the uppercased 2-digit ISO country code* of the connected network, "--" by default)
+    * connected: String (Core Telephony [CTRadioAccessTechnology](https://developer.apple.com/documentation/coretelephony/cttelephonynetworkinfo/radio_access_technology_constants) constant, "" by default)
 
 *There is an exception for International carriers. They might return the non-standardised 2-digits code "WD", standing for World.
 
