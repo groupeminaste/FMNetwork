@@ -9,14 +9,49 @@
 import Foundation
 import CoreTelephony
 
+/// This class contains every data about a SIM card and its connected network.
+/// - Note: Make sure you verify that card.active is equal to true before processing any data returned by the FMNetwork object.
 public class FMNetwork {
     
+    /// This property contains every data about a SIM card.
+    /// - Note: Make sure you verify that card.active is equal to true before processing any data returned by the FMNetwork object.
     public var card: FMNetworkSIMData
+    
+    /// This property contains every data about a connected network.
+    /// - Note: Make sure you verify that card.active is equal to true before processing any data returned by the FMNetwork object.
     public var network: FMNetworkData
     
+    /// Initialize an FMNetwork object. Retrieves all the data for a given SIM card type.
+    /// - Parameter type: SIM card type.<br><br>
+    /// There are three options available :
+    ///   * .sim
+    ///   * .esim
+    ///   * .current
+    ///
+    /// - Note: If you select .current as the type, the SIM card type returned in the FMNetwork property will very likely change to .sim or .esim accordingly. In case the card.type property still returns current on the FMNetwork object, it means FMNetwork couldn't identify the SIM card and the data returned are likely to be incorrect. Make sure you check the card.active property on the FMNetwork object first, to make sure the SIM card is in use and therefore identified.
     public init(type: FMNetworkType) {
-        
+        (card, network) = FMNetwork.createFMNetwork(type)
+    }
+    
+    
+    
+    // DEPRECATED SECTION --------------------------------------
+    
+    
+    // OBSOLETED SECTION ---------------------------------------
+    
+    
+    // INTERNAL SECTION ----------------------------------------
+    
+    
+    /// Internal function to construct an FMNetwork object, with a given SIM card type.
+    /// - Parameter type: SIM card type (.sim, .esim or .current)
+    /// - Returns: A couple of FMNetworkSIMData and FMNetworkData to be inserted in the respective FMNetwork class variables
+    internal static func createFMNetwork(_ type: FMNetworkType) -> (FMNetworkSIMData, FMNetworkData) {
         var type = type
+        
+        var card: FMNetworkSIMData
+        var network: FMNetworkData
         
         var operatorPListSymLinkPath: String
         var carrierPListSymLinkPath: String
@@ -58,8 +93,8 @@ public class FMNetwork {
             
         }
         
-        self.card = FMNetworkSIMData(type: type)
-        self.network = FMNetworkData()
+        card = FMNetworkSIMData(type: type)
+        network = FMNetworkData()
         
         if type == .sim || type == .current {
             
@@ -87,11 +122,9 @@ public class FMNetwork {
         // Déclaration du gestionaire de fichiers
         let fileManager = FileManager.default
         let operatorPListPath = try? fileManager.destinationOfSymbolicLink(atPath: operatorPListSymLinkPath)
-        print(operatorPListPath ?? "UNKNOWN")
         
         // Obtenir le fichier de configuration de la carte SIM
         let carrierPListPath = try? fileManager.destinationOfSymbolicLink(atPath: carrierPListSymLinkPath)
-        print(carrierPListPath ?? "UNKNOWN")
         
         card.data = "-----"
         if !(carrierPListPath ?? "unknown").lowercased().contains("unknown") {
@@ -99,8 +132,6 @@ public class FMNetwork {
             if let group = values?.first {
                 card.data = group[0]
             }
-            
-            print(card.data)
         }
         
         network.data = "-----"
@@ -109,8 +140,6 @@ public class FMNetwork {
             if let group = values?.first {
                 network.data = group[0]
             }
-            
-            print(network.data)
         }
         
         network.name = "Carrier"
@@ -130,9 +159,7 @@ public class FMNetwork {
             
             network.name = (secondDict["StatusBarCarrierName"] as? String) ?? "Carrier"
             network.fullname = (secondDict["CarrierName"] as? String) ?? "Carrier"
-        } catch {
-            print("Une erreur s'est produite : \(error)")
-        }
+        } catch {}
         
         
         card.simname = "Carrier"
@@ -151,9 +178,7 @@ public class FMNetwork {
                     
             card.simname = (secondDictsim["StatusBarCarrierName"] as? String) ?? "Carrier"
             card.fullname = (secondDictsim["CarrierName"] as? String) ?? "Carrier"
-        } catch {
-            print("Une erreur s'est produite : \(error)")
-        }
+        } catch {}
         
         network.mcc = String(network.data.prefix(3))
         network.mnc = String(network.data.count == 6 ? network.data.suffix(3) : network.data.suffix(2))
@@ -181,8 +206,6 @@ public class FMNetwork {
                     }
                     card.active = true
                 }
-                print("For Carrier " + (carrier.carrierName ?? "null") + ", got " + radio)
-                print(service)
             }
         }
         } else {
@@ -193,16 +216,18 @@ public class FMNetwork {
             network.connected = info.currentRadioAccessTechnology ?? ""
         }
         
-        print(network.connected)
-        
         card.name = card.carrier.carrierName ?? "Carrier"
+        
+        if card.name == "Carrier" && card.fullname != "Carrier" {
+            card.name = card.fullname
+        }
         
         if card.name == "Carrier" && card.simname != "Carrier" {
             card.name = card.simname
         }
         
-        if card.name == "Carrier" && card.fullname != "Carrier" {
-            card.name = card.fullname
+        if network.name == "Carrier" && network.fullname != "Carrier" {
+            network.name = network.fullname
         }
 
         if (network.mcc == "---" && network.mnc == "--"){
@@ -213,6 +238,7 @@ public class FMNetwork {
         card.land = CarrierIdentification.getIsoCountryCode(card.mcc, card.mnc)
         network.land = CarrierIdentification.getIsoCountryCode(network.mcc, network.mnc)
         
+        return (card, network)
     }
     
 }

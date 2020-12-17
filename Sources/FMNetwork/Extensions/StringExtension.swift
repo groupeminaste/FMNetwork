@@ -8,8 +8,22 @@
 
 import Foundation
 
+/// This internal extension is used to group String values
 internal extension String {
     
+    
+    // DEPRECATED SECTION --------------------------------------
+    
+    
+    // OBSOLETED SECTION ---------------------------------------
+    
+    
+    // INTERNAL SECTION ----------------------------------------
+    
+    
+    /// This function groups a String using a given Regex pattern
+    /// - Parameter regexPattern: The Regex pattern to be used
+    /// - Returns: The double array containing the groups splited by the Regex pattern
     func groups(for regexPattern: String) -> [[String]] {
         do {
             let text = self
@@ -24,8 +38,7 @@ internal extension String {
                     return String(text[range])
                 }
             }
-        } catch let error {
-            print("invalid regex: \(error.localizedDescription)")
+        } catch {
             return []
         }
     }

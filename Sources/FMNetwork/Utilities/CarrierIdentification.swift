@@ -8,8 +8,24 @@
 
 import Foundation
 
+/// This internal class is used to identify carriers.
 internal class CarrierIdentification {
-
+    
+    
+    // DEPRECATED SECTION --------------------------------------
+    
+    
+    // OBSOLETED SECTION ---------------------------------------
+    
+    
+    // INTERNAL SECTION ----------------------------------------
+    
+    
+    /// This function gets the uppercased 2-digit ISO country code for a given pair of Mobile Country Code (MCC) and Mobile Network Code (MNC).
+    /// - Parameters:
+    ///   - country: The Mobile Country Code (MCC) of the carrier, as a String
+    ///   - mnc: The Mobile Network Code (MNC) of the carrier, as a String
+    /// - Returns: The matching uppercased 2-digit ISO country code, or "--" (2x '-') if no matching found.
     internal static func getIsoCountryCode (_ country : String, _ mnc : String) -> String {
         let dictCodes = [
             "412" : "AF",
