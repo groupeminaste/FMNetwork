@@ -26,6 +26,13 @@ if current.card.mcc == current.network.mcc {
     print("The card is in its home country!")
 }
 
+// If you want to access the complementary data provided by the official FMobile API service, you need to initiate the fmobile property. It is equal to nil by default, and needs to be initialized manually using the loadFMobileService() function after the FMNetwork object got initialized. The function is working in async, and requires an active Internet connection to work properly. The status property recieved by a completionHandler is a Bool indicating whether the retrieve of the data was successful or not. You are fully responsible of the mobile data consumed by this function.
+current.loadFMobileService { (status) in
+    if status {
+        print(current.fmobile?.mcc)
+    }
+}
+
 // To access the full documentation, you can use the Quick Help feature in Xcode. Simply Command + click on any item of FMNetwork you wrote (for example the first mcc), and click on Show Quick Help to view the entire documentation for that part of the code.
 ```
 
