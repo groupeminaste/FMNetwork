@@ -21,6 +21,10 @@ public class FMNetwork {
     /// - Note: Make sure you verify that card.active is equal to true before processing any data returned by the FMNetwork object.
     public var network: FMNetworkData
     
+    /// This property is used in case you want complementary data about a SIM card, using the FMobile API service. The property is nil by default. To enable it, you need to call the loadFMobileService() function after having initiated your FMNetwork object. Keep in mind the FMobile API service requires an active Internet connection, and is working in async. You are fully responsible of the mobile data consumed by this function.
+    /// - Note: Make sure you verify that card.active is equal to true before processing any data returned by the FMNetwork object.
+    public var fmobile: FMobileService?
+    
     /// Initialize an FMNetwork object. Retrieves all the data for a given SIM card type.
     /// - Parameter type: SIM card type.<br><br>
     /// There are three options available :
@@ -31,6 +35,23 @@ public class FMNetwork {
     /// - Note: If you select .current as the type, the SIM card type returned in the FMNetwork property will very likely change to .sim or .esim accordingly. In case the card.type property still returns current on the FMNetwork object, it means FMNetwork couldn't identify the SIM card and the data returned are likely to be incorrect. Make sure you check the card.active property on the FMNetwork object first, to make sure the SIM card is in use and therefore identified.
     public init(type: FMNetworkType) {
         (card, network) = FMNetwork.createFMNetwork(type)
+    }
+    
+    /// Initialize the fmobile property using the official FMobile API service, in case you want complementary data about a SIM card. Keep in mind the FMobile API service requires an active Internet connection, and is working in async. You are fully responsible of the mobile data consumed by this function. The function completes in async with a Boolean, indicating whether the retrieve of the complementary data via the FMobile API service was successful or not.
+    /// - Parameter completionHandler: Async completion, requires an active Internet connection to work properly
+    /// - Returns: A Boolean via the completionHandler, indicating if the data was successfully stored in the fmobile property
+    public func loadFMobileService(completionHandler: @escaping (Bool) -> ()) {
+        FMobileService.fetch(forMCC: card.mcc, andMNC: card.mnc) { (service) in
+            if (service != nil) {
+                service?.europeanCheck()
+                FMobileService.replace(service?.hp ?? "", { service?.hp = $0 }, CTRadioAccessTechnologyWCDMA)
+                FMobileService.replace(service?.nrp ?? "", { service?.nrp = $0 }, CTRadioAccessTechnologyHSDPA)
+                self.fmobile = service
+                completionHandler(true)
+            } else {
+                completionHandler(false)
+            }
+        }
     }
     
     

@@ -20,6 +20,11 @@ internal class CarrierIdentification {
     
     // INTERNAL SECTION ----------------------------------------
     
+    /// - Attention: This variable should stay internal. The actual values behind the non-standard EU ISO code are set by the FMobile Team and may vary. You should not use that function for other purposes, as it is not standardized and only fits the current version of the API service. For instance, both of these ISO codes lack the inclusion of Great Britain, despite containing some other countries not inside the European Union. In short, don't use it, it is reserved for the staff that knows how they selected the corresponding country ISO code values.
+    internal static let europe = ["FR", "DE", "AT", "BE", "BG", "CY", "HR", "DK", "ES", "EE", "FI", "GI", "GR", "HU", "IE", "IS", "IT", "LV", "LI", "LT", "LU", "MT", "NO", "NL", "PL", "PT", "CZ", "RO", "SK", "SI", "SE", "GP", "GF", "MQ", "YT", "RE", "BL", "MF"]
+    
+    /// - Attention: This variable should stay internal. The actual values behind the non-standard UE ISO code are set by the FMobile Team and may vary. You should not use that function for other purposes, as it is not standardized and only fits the current version of the API service. For instance, both of these ISO codes lack the inclusion of Great Britain, despite containing some other countries not inside the European Union. In short, don't use it, it is reserved for the staff that knows how they selected the corresponding country ISO code values.
+    internal static let europeland = ["FR", "DE", "AT", "BE", "BG", "CY", "HR", "DK", "ES", "EE", "FI", "GI", "GR", "HU", "IE", "IS", "IT", "LV", "LI", "LT", "LU", "MT", "NO", "NL", "PL", "PT", "CZ", "RO", "SK", "SI", "SE"]
     
     /// This function gets the uppercased 2-digit ISO country code for a given pair of Mobile Country Code (MCC) and Mobile Network Code (MNC).
     /// - Parameters:

@@ -12,6 +12,18 @@ final class FMNetworkTests: XCTestCase {
         let sim = FMNetwork(type: .sim)
         let esim = FMNetwork(type: .esim)
         
+        current.loadFMobileService() { (param) in
+            print(param)
+        }
+        
+        sim.loadFMobileService() { (param) in
+            print(param)
+        }
+        
+        esim.loadFMobileService() { (param) in
+            print(param)
+        }
+        
         // CURRENT CARD TEST
             // CARD TEST
             XCTAssertEqual(current.card.active, true)
