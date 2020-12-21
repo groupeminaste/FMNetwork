@@ -61,9 +61,25 @@ public class FMNetwork {
     public func loadFMobileService(completionHandler: @escaping (Bool) -> ()) {
         FMobileService.fetch(forMCC: card.mcc, andMNC: card.mnc) { (service) in
             if (service != nil) {
+                
                 service?.europeanCheck()
                 FMobileService.replace(service?.hp ?? "", { service?.hp = $0 }, CTRadioAccessTechnologyWCDMA)
                 FMobileService.replace(service?.nrp ?? "", { service?.nrp = $0 }, CTRadioAccessTechnologyHSDPA)
+                
+                for value in self.card.plmns {
+                    if value.mcc == service?.mcc ?? "" && value.mnc == service?.itimnc ?? "" {
+                        service?.nrdec = true
+                    }
+                }
+                
+                if service?.nrdec ?? false {
+                    service?.chasedmnc = service?.mnc
+                } else {
+                    service?.chasedmnc = service?.itimnc
+                }
+                
+                service?.minimalSetup = self.card.eligibleminimalsetup
+                
                 self.fmobile = service
                 completionHandler(true)
             } else {
@@ -214,7 +230,21 @@ public class FMNetwork {
             }
             let arraysim = testsim["StatusBarImages"] as? NSArray ?? NSArray.init(array: [0])
             let secondDictsim = NSDictionary(dictionary: arraysim[0] as? Dictionary ?? NSDictionary() as? Dictionary<AnyHashable, Any> ?? Dictionary())
-                    
+            
+            let array = testsim["SupportedPLMNs"] as? NSArray ?? NSArray.init(array: [0])
+            
+            if array.count <= 1 {
+                card.eligibleminimalsetup = true
+            }
+            
+            for item in array {
+                if let value = item as? String, (value.count == 5 || value.count == 6) {
+                    let plmnmcc = String(value.prefix(3))
+                    let plmnmnc = String(value.count == 6 ? value.suffix(3) : value.suffix(2))
+                    card.plmns.append(PLMN(mcc: plmnmcc, mnc: plmnmnc))
+                }
+            }
+            
             card.simname = (secondDictsim["StatusBarCarrierName"] as? String) ?? "Carrier"
             card.fullname = (secondDictsim["CarrierName"] as? String) ?? "Carrier"
         } catch {}

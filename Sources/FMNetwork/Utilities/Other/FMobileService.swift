@@ -254,6 +254,29 @@ public class FMobileService: Codable {
     */
     public var roam5G: Bool?
     
+    /** This propery returns the Mobile Network Code (MNC) used to detect the national roaming network, as declared at the FMobile API service, as a String. It may be equal to mnc or itimnc, depending on the nrdec property. If nrdec is equal to true, chasedmnc will be equal to mnc and you will need to do a speedtest in order to detect the national roaming.
+    ```text
+    Example:
+    chasedmnc == "15" (The MNC used to detect national roaming network for Free Mobile)
+    ```
+     
+    - Attention: If you are dealing with national roaming, it would be best to check that the disableFMobileCore property is equal to false first.
+    - Attention: If chasedmnc is equal to mnc, you will need to do a speedtest in order to detect the national roaming.
+    - Warning: This variable will likely return mnc by default, but can also return nil in case something went wrong.
+    */
+    public var chasedmnc: String?
+    
+    /** This propery returns the national roaming declaration status of the SIM card carrier, as a Bool.
+     
+     ```text
+     Example:
+     nrdec == true (The national roaming declaration status for Free Mobile)
+     ```
+  
+     - Warning: If nrdec is equal to true, the roaming network is declared and chasedmnc will be equal to mnc, so you will need to do a speedtest in order to detect the national roaming. This variable returns nil in case something went wrong.
+     */
+    public var nrdec: Bool?
+    
     // DEPRECATED SECTION --------------------------------------
     
     

@@ -97,6 +97,16 @@ public class FMNetworkSIMData {
     public var type: FMNetworkType
     
     
+    /** This propery returns the list of the declared roaming PLMNs of the SIM card carrier.
+            
+        Example:
+        * plmns == [PLMN(mcc: 208, mnc: 00), PLMN(mcc: 208, mnc: 01), PLMN(mcc: 208, mnc: 02)] (the declared roaming PLMNs for Free Mobile)
+     
+    - Warning: This variable returns [] (PLMN) in case no value was not found.
+    */
+    public var plmns: [PLMN]
+    
+    
     // DEPRECATED SECTION --------------------------------------
     
     
@@ -104,6 +114,20 @@ public class FMNetworkSIMData {
     
     
     // INTERNAL SECTION ----------------------------------------
+    
+    
+    /** This propery returns the full name of the company running the SIM card carrier.
+     
+    - Remark: This variable is temporary and used to set the fmobile.minimalsetup property when using the FMobile API service, and therefore it is recommended to keep it internal. This variable returns the minimal setup eligibility of the carrier of the SIM card.
+            
+        Example:
+        * eligibleminimalsetup == false (minimal setup eligibility for Free Mobile)
+     
+    - Warning: This variable returns true by default.
+    - Important: Use fmobile.minimalsetup instead
+    */
+    internal var eligibleminimalsetup: Bool
+    
     
     /** This propery returns the full name of the company running the SIM card carrier.
      
@@ -154,7 +178,7 @@ public class FMNetworkSIMData {
     ///   - carrier: carrier to add to the object
     ///   - active: active status to add to the object
     ///   - type: type to add to the object
-    internal init(mcc: String = String(), mnc: String = String(), land: String = String(), name: String = String(), fullname: String = String(), data: String = String(), simname: String = String(), carrier: CTCarrier = CTCarrier(), active: Bool = false, type: FMNetworkType = .sim) {
+    internal init(mcc: String = String(), mnc: String = String(), land: String = String(), name: String = String(), fullname: String = String(), data: String = String(), simname: String = String(), carrier: CTCarrier = CTCarrier(), active: Bool = false, type: FMNetworkType = .sim, plmns: [PLMN] = [PLMN](), eligibleminimalsetup: Bool = true) {
         self.mcc = mcc
         self.mnc = mnc
         self.land = land
@@ -165,6 +189,8 @@ public class FMNetworkSIMData {
         self.carrier = carrier
         self.active = active
         self.type = type
+        self.plmns = plmns
+        self.eligibleminimalsetup = eligibleminimalsetup
     }
     
 }
