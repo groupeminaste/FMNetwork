@@ -101,7 +101,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 ## Examples
 
-* [FMNetworkExample](https://github.com/GroupeMINASTE/FMNetworkExample), the official example repository for the FMNetowork Swift Package.
+* [FMNetworkExample](https://github.com/GroupeMINASTE/FMNetworkExample), the official example repository for the FMNetwork Swift Package.
 
 ## Donations
 
