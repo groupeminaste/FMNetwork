@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2020 Groupe MINASTE
+ *  Copyright (C) 2021 Groupe MINASTE
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,10 @@
  */
 //
 //  PLMN.swift
-//  
+//  FMNetwork
 //
-//  Created by PlugN on 21.12.20..
+//  Created by PlugN on 21/12/2020.
+//  Copyright © 2020 Groupe MINASTE. All rights reserved.
 //
 
 import Foundation

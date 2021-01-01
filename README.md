@@ -47,7 +47,7 @@ FMNetwork: (contains every data about a SIM card and its connected network)
     * mnc: String (returns the Mobile Network Code (MNC) of the SIM card carrier, "--" by default)
     * land: String (returns the uppercased 2-digit ISO country code* of the SIM card carrier, "--" by default)
     * type: FMNetworkType (.sim, .esim or .current)
-    * plmns: [PLMN] (returns the list of mcc and mnc of the declared roaming PLMNs, [] by default )
+    * plmns: [PLMN] (returns the list of mcc and mnc of the declared roaming PLMNs, [] by default)
 * network: FMNetworkData (contains every data about the connected network of a SIM card)
     * name: String (returns the name of the connected network, "Carrier" by default)
     * mcc: String (returns the Mobile Country Code (MCC) of the connected network, "---" by default)
@@ -77,13 +77,18 @@ FMNetwork: (contains every data about a SIM card and its connected network)
   * roam5G: Bool? (returns the declared 5G national roaming status, nil by default)
   * chasedmnc: String? (returns the MNC used to detect the national roaming network - if mnc, requires a speedtest to detect the national roaming, mnc/nil by default)
   * nrdec: Bool? (returns the national roaming declaration status - if true, chasedmnc = mnc, false/nil by default)
-
+* device: FMNetworkDevice (contains all the data about the device, independently from the mobile network)
+ * currentWifiNetwork: WIFI? (returns all the data about the currently connected Wi-Fi network, if the prerequisites are satisfied, nil by default)
+ * isOnPhoneCall: Bool (retruns the call status, for phone calls as well as VoIP apps using CallKit, false by default)
+ * isConnectedToNetwork: Bool (returns the Internet connection status, no matter how)
+ * isOnAirplaneMode: Bool (returns the Airplane Mode toggle status for the device)
+  
 *There is an exception for International carriers. They might return the non-standardised 2-digits code "WD", standing for World.
 
 ### To access the full documentation, you can use the Quick Help feature in Xcode. Simply Command + click on any property of the FMNetwork item you wrote, and click on Show Quick Help to view the entire documentation for that code.
 
 ## Licence
-Copyright (C) 2020 Groupe MINASTE
+Copyright (C) 2021 Groupe MINASTE
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

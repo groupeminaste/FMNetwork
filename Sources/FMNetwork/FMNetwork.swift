@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2020 Groupe MINASTE
+ *  Copyright (C) 2021 Groupe MINASTE
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,6 +43,9 @@ public class FMNetwork {
     /// - Note: Make sure you verify that card.active is equal to true before processing any data returned by the FMNetwork object.
     public var fmobile: FMobileService?
     
+    /// This property contains every function to get data about the current device, independently from the mobile network.
+    public var device: FMNetworkDevice
+    
     /// Initialize an FMNetwork object. Retrieves all the data for a given SIM card type.
     /// - Parameter type: SIM card type.<br><br>
     /// There are three options available :
@@ -52,7 +55,7 @@ public class FMNetwork {
     ///
     /// - Note: If you select .current as the type, the SIM card type returned in the FMNetwork property will very likely change to .sim or .esim accordingly. In case the card.type property still returns current on the FMNetwork object, it means FMNetwork couldn't identify the SIM card and the data returned are likely to be incorrect. Make sure you check the card.active property on the FMNetwork object first, to make sure the SIM card is in use and therefore identified.
     public init(type: FMNetworkType) {
-        (card, network) = FMNetwork.createFMNetwork(type)
+        (card, network, device) = FMNetwork.createFMNetwork(type)
     }
     
     /// Initialize the fmobile property using the official FMobile API service, in case you want complementary data about a SIM card. Keep in mind the FMobile API service requires an active Internet connection, and is working in async. You are fully responsible of the mobile data consumed by this function. The function completes in async with a Boolean, indicating whether the retrieve of the complementary data via the FMobile API service was successful or not.
@@ -102,7 +105,7 @@ public class FMNetwork {
     /// Internal function to construct an FMNetwork object, with a given SIM card type.
     /// - Parameter type: SIM card type (.sim, .esim or .current)
     /// - Returns: A couple of FMNetworkSIMData and FMNetworkData to be inserted in the respective FMNetwork class variables
-    internal static func createFMNetwork(_ type: FMNetworkType) -> (FMNetworkSIMData, FMNetworkData) {
+    internal static func createFMNetwork(_ type: FMNetworkType) -> (FMNetworkSIMData, FMNetworkData, FMNetworkDevice) {
         var type = type
         
         var card: FMNetworkSIMData
@@ -206,7 +209,6 @@ public class FMNetwork {
             if #available(iOS 11.0, *) {
                 test = try NSDictionary(contentsOf: url, error: ())
             } else {
-                // Fallback on earlier versions
                 test = NSDictionary(contentsOf: url) ?? NSDictionary()
             }
             let array = test["StatusBarImages"] as? NSArray ?? NSArray.init(array: [0])
@@ -225,7 +227,6 @@ public class FMNetwork {
             if #available(iOS 11.0, *) {
                 testsim = try NSDictionary(contentsOf: urlcarrier, error: ())
             } else {
-                // Fallback on earlier versions
                 testsim = NSDictionary(contentsOf: urlcarrier) ?? NSDictionary()
             }
             let arraysim = testsim["StatusBarImages"] as? NSArray ?? NSArray.init(array: [0])
@@ -307,7 +308,9 @@ public class FMNetwork {
         card.land = CarrierIdentification.getIsoCountryCode(card.mcc, card.mnc)
         network.land = CarrierIdentification.getIsoCountryCode(network.mcc, network.mnc)
         
-        return (card, network)
+        let device = FMNetworkDevice()
+        
+        return (card, network, device)
     }
     
 }
