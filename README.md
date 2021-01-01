@@ -15,7 +15,7 @@ import FMNetwork
 
 // Create a variable and intitialize FMNetwork with the SIM card type you want.
 // You can use .current, .sim, or .esim.
-// Keep in mind that if you use .current, the SIM card type that will be returned in the card.type property is very likely to change to 
+// Keep in mind that if you use .current, the SIM card type that will be returned in the card.type property is very likely to change to .sim or .esim accordingly.
 let current = FMNetwork(.current)
 let sim = FMNetwork(.sim)
 let esim = FMNetwork(.esim)
@@ -31,6 +31,19 @@ current.loadFMobileService { (status) in
     if status {
         print(current.fmobile?.mcc)
     }
+}
+
+// You can also access some device properties, like the airplane mode status.
+if current.device.isOnAirplaneMode {
+    print("The device is on airplane mode!")
+}
+
+// Or you can access data about the connected Wi-Fi network.
+// The device property is not depending on any mobile network, which means you can call it from any FMNetwork object, including the SIM and eSIM.
+if let network = current.device.currentWifiNetwork {
+    print("The device is connected to the " + network.ssid + " network.")
+} else {
+    print("The device is not connected to Wi-Fi, or the app does not meet the requirements.")
 }
 
 // To access the full documentation, you can use the Quick Help feature in Xcode. Simply Command + click on any item of FMNetwork you wrote (for example the first mcc), and click on Show Quick Help to view the entire documentation for that part of the code.
@@ -78,10 +91,10 @@ FMNetwork: (contains every data about a SIM card and its connected network)
   * chasedmnc: String? (returns the MNC used to detect the national roaming network - if mnc, requires a speedtest to detect the national roaming, mnc/nil by default)
   * nrdec: Bool? (returns the national roaming declaration status - if true, chasedmnc = mnc, false/nil by default)
 * device: FMNetworkDevice (contains all the data about the device, independently from the mobile network)
- * currentWifiNetwork: WIFI? (returns all the data about the currently connected Wi-Fi network, if the prerequisites are satisfied, nil by default)
- * isOnPhoneCall: Bool (retruns the call status, for phone calls as well as VoIP apps using CallKit, false by default)
- * isConnectedToNetwork: Bool (returns the Internet connection status, no matter how)
- * isOnAirplaneMode: Bool (returns the Airplane Mode toggle status for the device)
+  * currentWifiNetwork: WIFI? (returns all the data about the currently connected Wi-Fi network, if the prerequisites are satisfied, nil by default)
+  * isOnPhoneCall: Bool (retruns the call status, for phone calls as well as VoIP apps using CallKit, false by default)
+  * isConnectedToNetwork: Bool (returns the Internet connection status, no matter how)
+  * isOnAirplaneMode: Bool (returns the Airplane Mode toggle status for the device)
   
 *There is an exception for International carriers. They might return the non-standardised 2-digits code "WD", standing for World.
 

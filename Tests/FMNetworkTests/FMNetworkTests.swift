@@ -30,6 +30,12 @@ final class FMNetworkTests: XCTestCase {
         let sim = FMNetwork(type: .sim)
         let esim = FMNetwork(type: .esim)
         
+        if let network = current.device.currentWifiNetwork {
+            print("The device is connected to the " + network.ssid + " network.")
+        } else {
+            print("The device is not connected to Wi-Fi, or the app does not meet the requirements.")
+        }
+        
         current.loadFMobileService() { (param) in
             print(param)
         }
