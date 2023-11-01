@@ -2,6 +2,8 @@
 
 FMobile Developer Pack v5. The power of FMobile's latest engine, FMNetwork, in a simple Swift Package.
 
+### Important information: FMobile 5 and FMNetwork lost a lot of its features due to changes in iOS 15.2. Starting with iOS 16.0, Apple has also deprecated the CTCarrier object from the Core Telephony API, and building FMobile 5 using iOS 16.4+ as a target (SDK) will make FMobile and FMNetwork entirely unusable as all the values returned by the APIs will be generic.
+
 ## Installation
 
 Add `https://github.com/GroupeMINASTE/FMNetwork.swift.git` to your Swift Package configuration (or using the Xcode menu: `File` > `Swift Packages` > `Add Package Dependency`)
